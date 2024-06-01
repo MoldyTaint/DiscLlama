@@ -25,7 +25,7 @@ context_storage = {}
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
 
-@bot.slash_command(guild_ids=[DISCORD_SERVER_ID], description="Ask a question to the AI, starting with a prompt.")
+@bot.slash_command(guild_ids=[DISCORD_SERVER_ID], description="Ask a question to the AI, starting with a preprompt.")
 async def ask(ctx, preprompt: Option(str, "Choose a preprompt", choices=[OptionChoice(key, key) for key in preprompts.keys()]), question: str):
     await ctx.defer()
     preprompt_text = preprompts[preprompt]  # Fetch the full preprompt text based on the selected key
