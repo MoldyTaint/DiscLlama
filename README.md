@@ -36,12 +36,12 @@ These instructions will get you a copy of the project up and running on your loc
 
 3. **Configure your environment:**
 
-    As of right now, I do not have an enviroment variable set up yet nor do I have the .env file. I will be adding this later on. As for right now you will be replacing these variables:
+    There is a file labled .env. This file is housing sensitive information like your Discord Bot Tokern, Guild ID, and Ollama Server.
 
     ```
-    bot.run('YOUR DISCORD BOT TOKEN') = Your Discord Bot Token
-    http://localhost:11434/api/generate = Your Ollama IP
-    guild_ids=[Discord Server ID] = Your Discord Server ID
+    DISCORD_BOT_TOKEN=Discord Bot Token Here
+    DISCORD_SERVER_ID=Discord Server ID Here
+    LOCALHOST_URL=http://localhost/api/generate
     ```
 
 4. **Run the bot:**
