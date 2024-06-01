@@ -3,6 +3,16 @@ import discord
 from discord.ext import commands
 from discord.commands import Option, OptionChoice
 from preprompts import preprompts
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Retrieve sensitive information from environment variables
+DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
+DISCORD_SERVER_ID = int(os.getenv('DISCORD_SERVER_ID'))
+LOCALHOST_URL = os.getenv('LOCALHOST_URL')
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -15,7 +25,7 @@ context_storage = {}
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
 
-@bot.slash_command(guild_ids=[Discord Server ID], description="Ask a question to the AI, starting with a prompt.")
+@bot.slash_command(guild_ids=[DISCORD_SERVER_ID], description="Ask a question to the AI, starting with a prompt.")
 async def ask(ctx, preprompt: Option(str, "Choose a preprompt", choices=[OptionChoice(key, key) for key in preprompts.keys()]), question: str):
     await ctx.defer()
     preprompt_text = preprompts[preprompt]  # Fetch the full preprompt text based on the selected key
@@ -32,7 +42,7 @@ async def ask(ctx, preprompt: Option(str, "Choose a preprompt", choices=[OptionC
             "stream": False,
             "context": last_context  # Include the last context if available
         }
-        async with session.post('http://localhost:11434/api/generate', json=payload) as resp:
+        async with session.post(LOCALHOST_URL, json=payload) as resp:
             if resp.status == 200:
                 data = await resp.json()
                 response = data.get('response', 'No response from AI.')
@@ -48,4 +58,4 @@ async def ask(ctx, preprompt: Option(str, "Choose a preprompt", choices=[OptionC
                     await ctx.followup.send(chunk)
 
 # Run the bot
-bot.run('YOUR DISCORD BOT TOKEN')
+bot.run(DISCORD_BOT_TOKEN)
